@@ -18,6 +18,7 @@ def first_site(url):
         for i in links:
             print(i)
     except:
+
         print('error')
 
 first_site('https://igiaviationdelhi.com')
