@@ -1,24 +1,33 @@
-import usp
+
+
+import re
+
 from usp.tree import sitemap_tree_for_homepage
 
-def first_site(url):
-    try:
-        tree = sitemap_tree_for_homepage(url)
-    except:
-        print('error')
+tree = sitemap_tree_for_homepage("https://www.halifax.co.uk/money-explained/")
+check_url = [str(i) for i in tree.all_pages()]
 
-    links = []
-    try:
-        for page in tree.all_pages():
-            links.append(page)
-    except:
-        print('error')
+out=[]
+def Find(string):
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+    url = re.findall(regex, string)
+    return [x[0] for x in url]
 
-    try:
-        for i in links:
-            print(i)
-    except:
+def reemovNestings(l):
 
-        print('error')
+    for i in l:
+        if type(i) == list:
+            reemovNestings(i)
+        else:
+            out.append(i)
 
-first_site('https://igiaviationdelhi.com')
+
+if bool(check_url):
+    links = [Find(j) for j in check_url]
+    reemovNestings(links)
+    print("Process url")
+
+else:
+    print('manually')
+
+print(out)
